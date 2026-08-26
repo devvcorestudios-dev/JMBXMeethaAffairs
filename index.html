@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JMB x Meetha Affairs | Artisanal Sweets & Confectionery</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* CSS Variables for Theme */
+        :root {
+            --rosey-50: #fff0f3;
+            --rosey-100: #ffe3e8;
+            --rosey-200: #ffccd5;
+            --rosey-300: #ffb3c1;
+            --rosey-500: #d87093;
+            --rosey-600: #c75b80;
+            --rosey-800: #8b3a56;
+            --rosey-900: #5e2437;
+        }
+
+        /* Base Resets & Global Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--rosey-50);
+            color: var(--rosey-900);
+            overflow-x: hidden;
+            position: relative;
+        }
+        h1, h2, h3, h4, .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        a { text-decoration: none; color: inherit; }
+        button { border: none; background: transparent; cursor: pointer; }
+        
+        ::selection {
+            background: var(--rosey-200);
+            color: var(--rosey-900);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--rosey-50); }
+        ::-webkit-scrollbar-thumb { background: var(--rosey-300); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--rosey-500); }
+
+        /* Layout Containers */
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+        .container-sm { max-width: 896px; margin: 0 auto; padding: 0 1.5rem; text-align: center; }
+        .container-xs { max-width: 512px; margin: 0 auto; position: relative; }
+
+        /* Background Decorations */
+        .bg-decor {
+            position: fixed;
+            width: 140px;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .decor-tl { top: 0; left: 0; transform: translate(-1rem, -1rem); }
+        .decor-br { bottom: 0; right: 0; transform: translate(1rem, 1rem) rotate(180deg); }
+        @media (min-width: 768px) { .bg-decor { width: 224px; } }
+
+        /* Intro Overlay */
+        #intro-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background-color: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            will-change: opacity;
+        }
+        .intro-flower {
+            position: fixed;
+            width: 192px;
+            transform: scale(0.75);
+            opacity: 0;
+            will-change: transform;
+        }
+        .intro-flower.tl { top: 0; left: 0; transform: translate(-25%, -25%) scale(0.75); }
+        .intro-flower.tr { top: 0; right: 0; transform: translate(25%, -25%) rotate(90deg) scale(0.75); }
+        .intro-flower.bl { bottom: 0; left: 0; transform: translate(-25%, 25%) rotate(-90deg) scale(0.75); }
+        .intro-flower.br { bottom: 0; right: 0; transform: translate(25%, 25%) rotate(180deg) scale(0.75); }
+        @media (min-width: 768px) { .intro-flower { width: 256px; } }
+        
+        .intro-text-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            z-index: 10;
+        }
+        .intro-text-wrapper h1 {
+            font-size: 1.875rem;
+            color: #ffe3e8;
+            opacity: 0;
+            transform: translateY(1.5rem);
+            will-change: transform;
+        }
+        #intro-text-2 { margin-top: 1rem; }
+        @media (min-width: 768px) { .intro-text-wrapper h1 { font-size: 3rem; } }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 50;
+            background: rgba(255, 240, 243, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 204, 213, 0.5);
+            transition: all 0.3s;
+        }
+        .nav-content {
+            height: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .brand-circle {
+            width: 3rem; height: 3rem;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid var(--rosey-200);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .nav-brand:hover .brand-circle { transform: scale(1.05); }
+        .brand-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .brand-cross { color: var(--rosey-500); font-weight: 300; font-size: 1.5rem; padding-bottom: 0.25rem; }
+        
+        .nav-links { display: none; align-items: center; gap: 2rem; font-weight: 500; font-size: 0.875rem; }
+        .nav-links a { transition: color 0.3s; }
+        .nav-links a:hover { color: var(--rosey-500); }
+        @media (min-width: 768px) { .nav-links { display: flex; } }
+
+        .btn {
+            display: inline-block;
+            background: var(--rosey-800);
+            color: #fff;
+            padding: 0.625rem 1.25rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .btn:hover { background: var(--rosey-900); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .btn-hide-mobile { display: none; }
+        @media (min-width: 640px) { .btn-hide-mobile { display: inline-block; } }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 5rem;
+            z-index: 10;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+        }
+        @media (min-width: 768px) { .hero-grid { grid-template-columns: repeat(2, 1fr); } }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            background: rgba(255, 204, 213, 0.6);
+            color: var(--rosey-800);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        .hero-title { font-size: 3rem; line-height: 1.1; margin-bottom: 1.5rem; color: var(--rosey-900); font-weight: 700; }
+        .hero-title span { font-weight: 400; color: var(--rosey-500); font-style: italic; }
+        @media (min-width: 768px) { .hero-title { font-size: 3.75rem; } }
+        .hero-desc { font-size: 1.125rem; color: rgba(139, 58, 86, 0.8); margin-bottom: 2rem; max-width: 32rem; line-height: 1.625; font-weight: 300; }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .btn-large { padding: 0.875rem 2rem; font-size: 1rem; }
+
+        .hero-image-wrapper { position: relative; display: flex; justify-content: center; }
+        .hero-img-box {
+            width: 18rem; height: 18rem;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            border: 4px solid rgba(255,255,255,0.8);
+            transform: rotate(3deg);
+            transition: transform 0.5s;
+        }
+        .hero-img-box:hover { transform: rotate(0deg); }
+        .hero-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        @media (min-width: 768px) { .hero-img-box { width: 24rem; height: 24rem; } }
+
+        /* Collections Section */
+        .collections {
+            padding: 6rem 0;
+            background: rgba(255, 255, 255, 0.5);
+            border-top: 1px solid rgba(255, 204, 213, 0.4);
+            border-bottom: 1px solid rgba(255, 204, 213, 0.4);
+            position: relative;
+            z-index: 10;
+        }
+        .section-sub { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--rosey-600); font-weight: 600; margin-bottom: 0.5rem; }
+        .section-title { font-size: 2.25rem; font-weight: 700; color: var(--rosey-900); margin-bottom: 3rem; }
+        @media (min-width: 768px) { .section-title { font-size: 2.25rem; } }
+        
+        .grid-3 { display: grid; grid-template-columns: 1fr; gap: 2rem; text-align: left; }
+        @media (min-width: 768px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+        
+       .card {
+            background: #fff;
+            border-radius: 1.5rem;
+            padding: 1.25rem;
+            border: 1px solid var(--rosey-100);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            /* Added transition for smooth hover effects */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* New Hover State */
+        .card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 25px -5px rgba(216, 112, 147, 0.15), 0 10px 10px -5px rgba(216, 112, 147, 0.05);
+            border-color: var(--rosey-200);
+        }
+
+        .card-img { 
+            width: 100%; 
+            height: 12rem; 
+            object-fit: cover; 
+            border-radius: 1rem; 
+            margin-bottom: 1rem;
+            /* Optional: slight transition for the image */
+            transition: transform 0.5s ease;
+        }
+
+        /* Optional: Makes the image zoom slightly when hovering over the card */
+        .card:hover .card-img {
+            transform: scale(1.03);
+        }
+        .card-img { width: 100%; height: 12rem; object-fit: cover; border-radius: 1rem; margin-bottom: 1rem; }
+        .card-title { font-size: 1.25rem; font-weight: 700; color: var(--rosey-900); margin-bottom: 0.5rem; }
+        .card-desc { font-size: 0.875rem; color: rgba(139, 58, 86, 0.7); margin-bottom: 1rem; }
+
+        /* Reviews Section */
+        .reviews { padding: 6rem 0; position: relative; z-index: 10; overflow: hidden; }
+        .reviews-header p { margin-top: 1rem; color: rgba(139, 58, 86, 0.7); font-weight: 300; }
+        .review-carousel { height: 320px; outline: none; }
+        
+        .review-card {
+            position: absolute; top: 0; left: 0; width: 100%;
+            background: #fff; padding: 2rem; border-radius: 1.5rem;
+            border: 1px solid var(--rosey-100);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            display: flex; flex-direction: column; justify-content: center; text-align: center;
+            will-change: transform, opacity, filter;
+        }
+        .stars { margin-bottom: 1rem; display: flex; justify-content: center; gap: 0.25rem; color: var(--rosey-400); font-size: 0.875rem; }
+        .review-text { color: var(--rosey-900); font-size: 1.125rem; line-height: 1.625; font-style: italic; margin-bottom: 1.5rem; }
+        @media (min-width: 768px) { .review-text { font-size: 1.25rem; } }
+        .reviewer-name { font-weight: 700; color: var(--rosey-800); }
+        .reviewer-event { font-size: 0.75rem; color: var(--rosey-500); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; display: block; margin-top: 0.25rem; }
+
+        .carousel-controls { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-top: 2rem; position: relative; z-index: 20; }
+        .control-btn {
+            width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s;
+        }
+        .control-btn.prev { border: 1px solid var(--rosey-300); color: var(--rosey-800); }
+        .control-btn.prev:hover { background: rgba(255, 204, 213, 0.5); }
+        .control-btn.next { background: var(--rosey-800); color: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .control-btn.next:hover { background: var(--rosey-900); }
+        .control-btn:focus { outline: 2px solid var(--rosey-500); outline-offset: 2px; }
+
+        .indicators { display: flex; gap: 0.5rem; }
+        .dot {
+            width: 0.625rem; height: 0.625rem; border-radius: 9999px;
+            background: var(--rosey-300);
+            transition: all 0.3s;
+        }
+        .dot:focus { outline: 2px solid var(--rosey-500); outline-offset: 2px; }
+        .dot.active { background: var(--rosey-800); width: 1.5rem; }
+
+        /* Footer */
+        .footer { background: var(--rosey-900); color: var(--rosey-100); padding: 4rem 0; position: relative; z-index: 10; }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+        @media (min-width: 768px) { .footer-grid { grid-template-columns: repeat(3, 1fr); } }
+        .footer h3 { font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
+        .footer h4 { font-size: 1.125rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
+        .footer p { color: rgba(255, 227, 232, 0.8); font-weight: 300; font-size: 0.875rem; line-height: 1.625; margin-bottom: 1.5rem; }
+        .footer ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem; color: rgba(255, 227, 232, 0.8); }
+        .footer ul a:hover { color: #fff; transition: color 0.3s; }
+        .copyright { font-size: 0.75rem; color: var(--rosey-300); }
+    </style>
+</head>
+<body>
+
+    <!-- Cherry Blossom Decorations -->
+    <svg class="bg-decor decor-tl" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 10 Q 50 80 150 120" stroke="#c75b80" stroke-width="2" fill="none"/>
+        <circle cx="50" cy="50" r="4" fill="#ffb3c1"/>
+        <circle cx="90" cy="90" r="5" fill="#ffb3c1"/>
+        <circle cx="130" cy="110" r="3" fill="#ffb3c1"/>
+        <path d="M45 45 Q 50 35 55 45 Q 50 55 45 45" fill="#d87093"/>
+        <path d="M85 85 Q 90 75 95 85 Q 90 95 85 85" fill="#d87093"/>
+    </svg>
+
+    <svg class="bg-decor decor-br" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 10 Q 50 80 150 120" stroke="#c75b80" stroke-width="2" fill="none"/>
+        <circle cx="50" cy="50" r="4" fill="#ffb3c1"/>
+        <circle cx="90" cy="90" r="5" fill="#ffb3c1"/>
+        <circle cx="130" cy="110" r="3" fill="#ffb3c1"/>
+        <path d="M45 45 Q 50 35 55 45 Q 50 55 45 45" fill="#d87093"/>
+        <path d="M85 85 Q 90 75 95 85 Q 90 95 85 85" fill="#d87093"/>
+    </svg>
+
+    <!-- GSAP Intro Overlay -->
+    <div id="intro-overlay">
+        <svg class="intro-flower tl" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 10 Q 50 80 150 120" stroke="#c75b80" stroke-width="2" fill="none"/>
+            <circle cx="50" cy="50" r="10" fill="#ffb3c1"/>
+            <circle cx="90" cy="90" r="12" fill="#ffb3c1"/>
+            <path d="M35 35 Q 50 15 65 35 Q 50 65 35 35" fill="#d87093"/>
+            <path d="M75 75 Q 95 55 115 75 Q 95 105 75 75" fill="#d87093"/>
+        </svg>
+        <svg class="intro-flower tr" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 10 Q 50 80 150 120" stroke="#c75b80" stroke-width="2" fill="none"/>
+            <circle cx="50" cy="50" r="10" fill="#ffb3c1"/>
+            <circle cx="90" cy="90" r="12" fill="#ffb3c1"/>
+            <path d="M35 35 Q 50 15 65 35 Q 50 65 35 35" fill="#d87093"/>
+            <path d="M75 75 Q 95 55 115 75 Q 95 105 75 75" fill="#d87093"/>
+        </svg>
+        <svg class="intro-flower bl" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 10 Q 50 80 150 120" stroke="#c75b80" stroke-width="2" fill="none"/>
+            <circle cx="50" cy="50" r="10" fill="#ffb3c1"/>
+            <circle cx="90" cy="90" r="12" fill="#ffb3c1"/>
+            <path d="M35 35 Q 50 15 65 35 Q 50 65 35 35" fill="#d87093"/>
+            <path d="M75 75 Q 95 55 115 75 Q 95 105 75 75" fill="#d87093"/>
+        </svg>
+        <svg class="intro-flower br" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 10 Q 50 80 150 120" stroke="#c75b80" stroke-width="2" fill="none"/>
+            <circle cx="50" cy="50" r="10" fill="#ffb3c1"/>
+            <circle cx="90" cy="90" r="12" fill="#ffb3c1"/>
+            <path d="M35 35 Q 50 15 65 35 Q 50 65 35 35" fill="#d87093"/>
+            <path d="M75 75 Q 95 55 115 75 Q 95 105 75 75" fill="#d87093"/>
+        </svg>
+        
+        <div class="intro-text-wrapper font-serif">
+            <h1 id="intro-text-1">JMB X MEETHA</h1>
+            <h1 id="intro-text-2">AFFAIRS</h1>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="#" class="nav-brand">
+                <div class="brand-circle">
+                    <img src="JMWLOGO.jpeg" alt="JMB Logo">
+                </div>
+                <span class="brand-cross">&times;</span>
+                <div class="brand-circle">
+                     <img src="MeethaAffairsLogo.jpeg" alt="Meetha Affairs Logo">
+                </div>
+            </a>
+            <nav class="nav-links">
+                <a href="#about">Our Story</a>
+                <a href="#carousel">Collections</a>
+                <a href="#reviews-section">Testimonials</a>
+            </nav>
+            <div>
+                <a href="#carousel" class="btn btn-hide-mobile">Explore Menu</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <span class="badge">Artisanal Confectionery</span>
+                <h1 class="hero-title font-serif">
+                    Tradition Wrapped in <span>Modern Elegance</span>
+                </h1>
+                <p class="hero-desc">
+                    Welcome to JMB x Meetha Affairs, where age-old Indian mithai traditions meet contemporary culinary artistry.
+                </p>
+                <div class="hero-actions">
+                    <a href="#carousel" class="btn btn-large">View Collections</a>
+                </div>
+            </div>
+
+            <div class="hero-image-wrapper">
+                <div class="hero-img-box hero-image">
+                    <img src="Store-1.png" alt="Assorted Mithai">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sweets Carousel Section (Grid) -->
+    <section id="carousel" class="collections">
+         <div class="container text-center">
+            <span class="section-sub">Handcrafted Delicacies</span>
+            <h3 class="section-title font-serif">Featured Collections</h3>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <img src="Gulabjamun.avif" class="card-img" alt="Sweets">
+                    <h4 class="card-title font-serif">Rose Gulab Jamun</h4>
+                    <p class="card-desc">Melt-in-mouth khoya spheres in rose water syrup.</p>
+                </div>
+                <div class="card">
+                    <img src="Kajukatli.jpg" class="card-img" alt="Sweets">
+                    <h4 class="card-title font-serif">Silver Kaju Katli</h4>
+                    <p class="card-desc">Premium cashew fudge garnished with edible silver leaf.</p>
+                </div>
+                <div class="card">
+                    <img src="pistaladoo.avif" class="card-img" alt="Sweets">
+                    <h4 class="card-title font-serif">Royal Pista Ladoo</h4>
+                    <p class="card-desc">Roasted California pistachios bound with pure cow's ghee.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Stacked Reviews Carousel -->
+    <section id="reviews-section" class="reviews">
+        <div class="container-sm reviews-header">
+            <span class="section-sub">Word of Mouth</span>
+            <h2 class="section-title font-serif" style="margin-bottom: 0;">Sweet Words</h2>
+            <p>See what our clients say about their unforgettable celebrations.</p>
+        </div>
+
+        <div class="container-xs review-carousel" id="review-container" tabindex="0">
+            <!-- Review Cards generated via JS -->
+        </div>
+
+        <!-- Carousel Controls -->
+        <div class="carousel-controls">
+            <button id="rev-prev" aria-label="Previous Review" class="control-btn prev">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <div id="rev-indicators" class="indicators">
+                <!-- Indicators generated via JS -->
+            </div>
+            <button id="rev-next" aria-label="Next Review" class="control-btn next">
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container footer-grid">
+            <div>
+                <h3 class="font-serif">JMB x Meetha Affairs</h3>
+                <p>Redefining traditional confectionery experiences.</p>
+            </div>
+            <div>
+                <h4 class="font-serif">Quick Links</h4>
+                <ul>
+                    <li><a href="#reviews-section">Testimonials</a></li>
+                    <li><a href="#">Corporate Gifting</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-serif">Crafted by DevCore Studios</h4>
+                <p>Engineered with pure vanilla CSS and GSAP animations.</p>
+                <p class="copyright">© 2026 JMB x Meetha Affairs. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // --- PAGE LOAD INTRO ANIMATION ---
+            const introTl = gsap.timeline({
+                onComplete: () => {
+                    document.getElementById('intro-overlay').style.display = 'none';
+                }
+            });
+
+            introTl.to(".intro-flower", { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out", stagger: 0.1 })
+                   .to("#intro-text-1", { opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.2)" }, "-=0.6")
+                   .to("#intro-text-2", { opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.2)" }, "-=0.5")
+                   .to("#intro-overlay", { opacity: 0, duration: 1.2, ease: "power2.inOut", delay: 0.8 });
+
+            // --- HERO ANIMATIONS ---
+            const heroTimeline = gsap.timeline();
+            heroTimeline.from(".hero-content > *", { y: 40, opacity: 0, duration: 1, stagger: 0.2, ease: "power3.out" })
+                        .from(".hero-image", { scale: 0.9, opacity: 0, duration: 1.2, ease: "power3.out" }, "-=0.8");
+
+            // --- STACKED REVIEWS CAROUSEL ---
+            const reviewsData = [
+                { name: "Ananya S.", event: "Wedding Client", text: "The presentation was breathtaking. The rose-scented gulab jamuns were the highlight of our reception dessert table!", stars: 5 },
+                { name: "Rajesh K.", event: "Corporate Partner", text: "Meetha Affairs elevated our Diwali corporate gifting. Elegant packaging and pure, authentic taste. Highly recommended.", stars: 5 },
+                { name: "Simran M.", event: "Baby Shower", text: "We wanted a light pastel theme for our sweets and they delivered perfectly. The cherry blossom aesthetic on the boxes was stunning.", stars: 5 },
+                { name: "Vikram P.", event: "Anniversary Celebration", text: "Incredible attention to detail. The Kaju Katlis with silver leaf tasted as luxurious as they looked.", stars: 4 }
+            ];
+
+            const container = document.getElementById('review-container');
+            const indicatorsContainer = document.getElementById('rev-indicators');
+            let currentIndex = 0;
+            let autoPlayInterval;
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            reviewsData.forEach((review, index) => {
+                const card = document.createElement('div');
+                card.className = "review-card";
+                
+                let starsHTML = Array(review.stars).fill('<i class="fa-solid fa-star"></i>').join('');
+                
+                card.innerHTML = `
+                    <div class="stars">${starsHTML}</div>
+                    <p class="review-text font-serif">"${review.text}"</p>
+                    <div>
+                        <h4 class="reviewer-name">${review.name}</h4>
+                        <span class="reviewer-event">${review.event}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+
+                const dot = document.createElement('button');
+                dot.className = "dot";
+                dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
+                dot.addEventListener('click', () => goToSlide(index));
+                indicatorsContainer.appendChild(dot);
+            });
+
+            const cards = document.querySelectorAll('.review-card');
+            const dots = indicatorsContainer.querySelectorAll('.dot');
+
+            function updateCarousel() {
+                cards.forEach((card, i) => {
+                    let offset = i - currentIndex;
+                    if (offset < 0) offset += cards.length;
+
+                    let scale = 1, y = 0, opacity = 1, blur = 0, zIndex = 10, visibility = "visible";
+
+                    if (offset === 0) { scale = 1; y = 0; opacity = 1; blur = 0; zIndex = 30; } 
+                    else if (offset === 1) { scale = 0.9; y = 30; opacity = 0.7; blur = 2; zIndex = 20; } 
+                    else if (offset === 2) { scale = 0.8; y = 60; opacity = 0.4; blur = 4; zIndex = 10; } 
+                    else { scale = 1.1; y = -40; opacity = 0; blur = 0; zIndex = 0; visibility = "hidden"; }
+
+                    gsap.to(card, {
+                        scale: scale, y: y, opacity: opacity, zIndex: zIndex,
+                        filter: `blur(${blur}px)`,
+                        autoAlpha: visibility === "hidden" ? 0 : opacity, 
+                        duration: prefersReducedMotion ? 0 : 0.8,
+                        ease: prefersReducedMotion ? "none" : "back.out(1.4)",
+                        overwrite: true
+                    });
+                });
+
+                // Update Indicators using Standard CSS class
+                dots.forEach((dot, i) => {
+                    if (i === currentIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+
+            function nextSlide() { currentIndex = (currentIndex + 1) % cards.length; updateCarousel(); }
+            function prevSlide() { currentIndex = (currentIndex - 1 + cards.length) % cards.length; updateCarousel(); }
+            function goToSlide(index) { currentIndex = index; updateCarousel(); resetAutoPlay(); }
+
+            document.getElementById('rev-next').addEventListener('click', () => { nextSlide(); resetAutoPlay(); });
+            document.getElementById('rev-prev').addEventListener('click', () => { prevSlide(); resetAutoPlay(); });
+
+            container.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') { nextSlide(); resetAutoPlay(); }
+                if (e.key === 'ArrowLeft') { prevSlide(); resetAutoPlay(); }
+            });
+
+            function startAutoPlay() { if (!prefersReducedMotion) autoPlayInterval = setInterval(nextSlide, 4500); }
+            function stopAutoPlay() { clearInterval(autoPlayInterval); }
+            function resetAutoPlay() { stopAutoPlay(); startAutoPlay(); }
+
+            container.addEventListener('mouseenter', stopAutoPlay);
+            container.addEventListener('mouseleave', startAutoPlay);
+            container.addEventListener('focusin', stopAutoPlay);
+            container.addEventListener('focusout', startAutoPlay);
+
+            updateCarousel();
+            startAutoPlay();
+        });
+    </script>
+</body>
+</html>
