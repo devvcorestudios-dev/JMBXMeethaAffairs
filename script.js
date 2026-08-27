@@ -1,0 +1,157 @@
+ document.addEventListener("DOMContentLoaded", () => {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // --- PAGE LOAD INTRO ANIMATION ---
+            const introTl = gsap.timeline({
+                onComplete: () => {
+                    document.getElementById('intro-overlay').style.display = 'none';
+                }
+            });
+
+            introTl.to(".intro-flower", { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out", stagger: 0.1 })
+                   .to("#intro-text-1", { opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.2)" }, "-=0.6")
+                   .to("#intro-text-2", { opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.2)" }, "-=0.5")
+                   .to("#intro-overlay", { opacity: 0, duration: 1.2, ease: "power2.inOut", delay: 0.8 });
+
+           
+            // --- MOBILE MENU LOGIC ---
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const closeMenuBtn = document.getElementById('close-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            function toggleMenu() {
+                mobileMenu.classList.toggle('active');
+            }
+
+            // Open/Close triggers
+            hamburgerBtn.addEventListener('click', toggleMenu);
+            closeMenuBtn.addEventListener('click', toggleMenu);
+            
+            // Automatically close the menu when a link is clicked
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                });
+            });
+           
+                   // --- HERO ANIMATIONS ---
+            const heroTimeline = gsap.timeline();
+            heroTimeline.from(".hero-content > *", { y: 40, opacity: 0, duration: 1, stagger: 0.2, ease: "power3.out" })
+                        .from(".hero-image", { scale: 0.9, opacity: 0, duration: 1.2, ease: "power3.out" }, "-=0.8");
+
+            // --- STACKED REVIEWS CAROUSEL ---
+            const reviewsData = [
+                { name: "Ananya S.", event: "Wedding Client", text: "The presentation was breathtaking. The rose-scented gulab jamuns were the highlight of our reception dessert table!", stars: 5 },
+                { name: "Rajesh K.", event: "Corporate Partner", text: "Meetha Affairs elevated our Diwali corporate gifting. Elegant packaging and pure, authentic taste. Highly recommended.", stars: 5 },
+                { name: "Simran M.", event: "Baby Shower", text: "We wanted a light pastel theme for our sweets and they delivered perfectly. The cherry blossom aesthetic on the boxes was stunning.", stars: 5 },
+                { name: "Vikram P.", event: "Anniversary Celebration", text: "Incredible attention to detail. The Kaju Katlis with silver leaf tasted as luxurious as they looked.", stars: 4 }
+            ];
+
+            const container = document.getElementById('review-container');
+            const indicatorsContainer = document.getElementById('rev-indicators');
+            let currentIndex = 0;
+            let autoPlayInterval;
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            reviewsData.forEach((review, index) => {
+                const card = document.createElement('div');
+                card.className = "review-card";
+                
+                let starsHTML = Array(review.stars).fill('<i class="fa-solid fa-star"></i>').join('');
+                
+                card.innerHTML = `
+                    <div class="stars">${starsHTML}</div>
+                    <p class="review-text font-serif">"${review.text}"</p>
+                    <div>
+                        <h4 class="reviewer-name">${review.name}</h4>
+                        <span class="reviewer-event">${review.event}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+
+                const dot = document.createElement('button');
+                dot.className = "dot";
+                dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
+                dot.addEventListener('click', () => goToSlide(index));
+                indicatorsContainer.appendChild(dot);
+            });
+
+            const cards = document.querySelectorAll('.review-card');
+            const dots = indicatorsContainer.querySelectorAll('.dot');
+
+            function updateCarousel() {
+                cards.forEach((card, i) => {
+                    let offset = i - currentIndex;
+                    if (offset < 0) offset += cards.length;
+
+                    let scale = 1, y = 0, opacity = 1, blur = 0, zIndex = 10, visibility = "visible";
+
+                    if (offset === 0) { scale = 1; y = 0; opacity = 1; blur = 0; zIndex = 30; } 
+                    else if (offset === 1) { scale = 0.9; y = 30; opacity = 0.7; blur = 2; zIndex = 20; } 
+                    else if (offset === 2) { scale = 0.8; y = 60; opacity = 0.4; blur = 4; zIndex = 10; } 
+                    else { scale = 1.1; y = -40; opacity = 0; blur = 0; zIndex = 0; visibility = "hidden"; }
+
+                    gsap.to(card, {
+                        scale: scale, y: y, opacity: opacity, zIndex: zIndex,
+                        filter: `blur(${blur}px)`,
+                        autoAlpha: visibility === "hidden" ? 0 : opacity, 
+                        duration: prefersReducedMotion ? 0 : 0.8,
+                        ease: prefersReducedMotion ? "none" : "back.out(1.4)",
+                        overwrite: true
+                    });
+                });
+
+                // Update Indicators using Standard CSS class
+                dots.forEach((dot, i) => {
+                    if (i === currentIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+
+            function nextSlide() { currentIndex = (currentIndex + 1) % cards.length; updateCarousel(); }
+            function prevSlide() { currentIndex = (currentIndex - 1 + cards.length) % cards.length; updateCarousel(); }
+            function goToSlide(index) { currentIndex = index; updateCarousel(); resetAutoPlay(); }
+
+            document.getElementById('rev-next').addEventListener('click', () => { nextSlide(); resetAutoPlay(); });
+            document.getElementById('rev-prev').addEventListener('click', () => { prevSlide(); resetAutoPlay(); });
+
+            container.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') { nextSlide(); resetAutoPlay(); }
+                if (e.key === 'ArrowLeft') { prevSlide(); resetAutoPlay(); }
+            });
+
+            function startAutoPlay() { if (!prefersReducedMotion) autoPlayInterval = setInterval(nextSlide, 4500); }
+            function stopAutoPlay() { clearInterval(autoPlayInterval); }
+            function resetAutoPlay() { stopAutoPlay(); startAutoPlay(); }
+
+            container.addEventListener('mouseenter', stopAutoPlay);
+            container.addEventListener('mouseleave', startAutoPlay);
+            container.addEventListener('focusin', stopAutoPlay);
+            container.addEventListener('focusout', startAutoPlay);
+
+            updateCarousel();
+            startAutoPlay();
+
+            // --- TAILORED OCCASIONS TAB LOGIC ---
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons and panes
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabPanes.forEach(p => p.classList.remove('active'));
+
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+
+                    // Find matching pane and activate it
+                    const targetId = 'tab-' + btn.getAttribute('data-tab');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+        });
