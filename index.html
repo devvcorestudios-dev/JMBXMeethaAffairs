@@ -98,15 +98,15 @@
             
             <div class="nav-actions">
                 <a href="#carousel" class="btn btn-hide-mobile">Explore Menu</a>
-                <!-- Hamburger Button (Mobile Only) -->
+                <!-- Hamburger Button (Mobile Only)
                 <button class="hamburger" id="hamburger-btn" aria-label="Toggle Menu">
                     <i class="fa-solid fa-bars"></i>
-                </button>
+                </button> -->
             </div>
         </div>
     </header>
 
-    <!-- Mobile Menu Overlay -->
+    <!-- Mobile Menu Overlay
     <div class="mobile-menu" id="mobile-menu">
         <div class="mobile-menu-content">
             <button class="close-menu" id="close-menu-btn" aria-label="Close Menu">
@@ -119,7 +119,7 @@
                 <a href="#carousel" class="btn mobile-link" style="margin-top: 1.5rem; text-align: center;">Explore Menu</a>
             </nav>
         </div>
-    </div>
+    </div> -->
 
     <!-- Hero Section -->
     <section class="hero">
@@ -388,20 +388,49 @@
         </div>
     </section>
 
-    <!-- Footer -->
+   <!-- Footer -->
     <footer id="contact" class="footer">
         <div class="container footer-grid">
+            
+            <!-- Left Side: Brand, Map, Socials -->
             <div>
                 <h3 class="font-serif">JMB x Meetha Affairs</h3>
-                <p>Redefining traditional confectionery experiences.</p>
+                <p>Crafting Sweet Memories with Trust, Tradition and Taste</p>
+                
+                <!-- Google Maps Embed (Lantern Square, Race Course Road, Indore) -->
+                <div class="footer-map-container">
+                    <iframe 
+                        width="100%" 
+                        height="180" 
+                        src="https://maps.google.com/maps?q=JMB%20Sweets%20Meetha%20Affairs,%20Race%20Course%20Road,%20Lantern%20Square,%20Indore&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                        frameborder="0" 
+                        scrolling="no" 
+                        marginheight="0" 
+                        marginwidth="0">
+                    </iframe>
+                </div>
+                
+                <!-- Social Media & Contact Links -->
+                <div class="social-links">
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="mailto:contact@jmbmeetha.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+                </div>
             </div>
+
+            <!-- Middle Side: Quick Links -->
             <div>
                 <h4 class="font-serif">Quick Links</h4>
                 <ul>
                     <li><a href="#reviews-section">Testimonials</a></li>
-                    <li><a href="#">Corporate Gifting</a></li>
+                    <li><a href="#occasions">Corporate Gifting</a></li>
+                    <li><a href="#occasions">Wedding Packages</a></li>
+                    <li><a href="#popular-products">Trending Sweets</a></li>
                 </ul>
             </div>
+
+            <!-- Right Side: Credits -->
             <div>
                 <h4 class="font-serif">Crafted by DevCore Studios</h4>
                 <p>Engineered with pure vanilla CSS and GSAP animations.</p>
@@ -409,7 +438,68 @@
             </div>
         </div>
     </footer>
-
+    
     <script src="script.js"></script>
+
+
+
+        <!-- Dark Overlay for Side Drawer -->
+    <div id="drawer-overlay" class="drawer-overlay"></div>
+    
+    <!-- Side Menu Popup Drawer -->
+    <div id="side-drawer" class="side-drawer">
+        <div class="drawer-header">
+            <h3 class="font-serif text-dark">Explore Menu</h3>
+            <button id="close-drawer-btn" class="close-drawer"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="drawer-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search sweets, hampers...">
+        </div>
+        
+        <!-- Expanded Menu Categories -->
+        <div class="drawer-content">
+            <h4 class="drawer-subtitle">Categories</h4>
+            <ul class="drawer-links">
+                <li><a href="#">Signature Mithai</a></li>
+                <li><a href="#">Sugar-Free Delights</a></li>
+                <li><a href="#">Premium Dry Fruits</a></li>
+                <li><a href="#">Namkeen & Savories</a></li>
+                <li><a href="#">Custom Wedding Boxes</a></li>
+                <li><a href="#">Corporate Gifting</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    
+   <!-- Mobile Bottom Navigation (Netflix Style) -->
+    <nav class="bottom-nav">
+        <a href="#" class="bottom-nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="#best-sellers" class="bottom-nav-item">
+            <i class="fa-solid fa-star"></i>
+            <span>Best</span>
+        </a>
+        <a href="#occasions" class="bottom-nav-item">
+            <i class="fa-solid fa-gift"></i>
+            <span>Gifting</span>
+        </a>
+        <a href="#reviews-section" class="bottom-nav-item">
+            <i class="fa-regular fa-comment-dots"></i>
+            <span>Reviews</span>
+        </a>
+        <!-- NEW Menu Button -->
+        <button id="open-menu-btn" class="bottom-nav-item">
+            <i class="fa-solid fa-bars"></i>
+            <span>Menu</span>
+        </button>
+    </nav>
+
+
 </body>
 </html>

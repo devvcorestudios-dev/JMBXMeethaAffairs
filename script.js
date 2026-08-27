@@ -14,26 +14,41 @@
                    .to("#intro-overlay", { opacity: 0, duration: 1.2, ease: "power2.inOut", delay: 0.8 });
 
            
-            // --- MOBILE MENU LOGIC ---
-            const hamburgerBtn = document.getElementById('hamburger-btn');
-            const closeMenuBtn = document.getElementById('close-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mobileLinks = document.querySelectorAll('.mobile-link');
+            // --- BOTTOM NAV & SIDE DRAWER COMBINED LOGIC ---
+            const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
+            const drawerOverlay = document.getElementById('drawer-overlay');
+            const sideDrawer = document.getElementById('side-drawer');
+            const openMenuBtn = document.getElementById('open-menu-btn');
+            const closeDrawerBtn = document.getElementById('close-drawer-btn');
 
-            function toggleMenu() {
-                mobileMenu.classList.toggle('active');
-            }
-
-            // Open/Close triggers
-            hamburgerBtn.addEventListener('click', toggleMenu);
-            closeMenuBtn.addEventListener('click', toggleMenu);
-            
-            // Automatically close the menu when a link is clicked
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.remove('active');
+            // 1. Handle Active States for Bottom Nav
+            bottomNavItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // Prevent default link jump IF it's the menu button
+                    if (this.id === 'open-menu-btn') {
+                        e.preventDefault();
+                    } else {
+                        // Only change active highlight for actual page links
+                        bottomNavItems.forEach(nav => nav.classList.remove('active'));
+                        this.classList.add('active');
+                    }
                 });
             });
+
+            // 2. Handle Side Drawer Open/Close
+            function toggleDrawer() {
+                sideDrawer.classList.toggle('active');
+                drawerOverlay.classList.toggle('active');
+            }
+
+            // Ensure the button exists before attaching the listener to prevent JS errors
+            if (openMenuBtn && closeDrawerBtn && drawerOverlay) {
+                openMenuBtn.addEventListener('click', toggleDrawer);
+                closeDrawerBtn.addEventListener('click', toggleDrawer);
+                drawerOverlay.addEventListener('click', toggleDrawer);
+            } else {
+                console.error("Drawer elements are missing from the HTML.");
+            }
            
                    // --- HERO ANIMATIONS ---
             const heroTimeline = gsap.timeline();
