@@ -1,0 +1,103 @@
+document.addEventListener("DOMContentLoaded", () => {
+    // Check if GSAP and ScrollTrigger are loaded before registering
+    if (typeof gsap !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+    }
+    
+    // --- PAGE LOAD INTRO ANIMATION (COLLABORATION) ---
+    const introOverlay = document.getElementById('intro-overlay');
+    const collabWrapper = document.querySelector('.intro-collab-wrapper');
+    
+    if (introOverlay && typeof gsap !== 'undefined') {
+        // Unhide the wrapper right as GSAP takes control
+        if (collabWrapper) gsap.set(collabWrapper, { visibility: "visible" });
+        
+        const introTl = gsap.timeline({
+            onComplete: () => {
+                introOverlay.style.display = 'none';
+            }
+        });
+
+     // 1. JMB slides in from the far left, Meetha from the far right
+            introTl.from("#intro-jmb", { x: -200, opacity: 0, duration: 1.2, ease: "power3.out" })
+                   .from("#intro-meetha", { x: 200, opacity: 0, duration: 1.2, ease: "power3.out" }, "<")
+                   
+            // 2. The 'X' punches in from the Z-axis
+                   .from("#intro-x", { scale: 5, opacity: 0, duration: 0.8, ease: "back.out(1.5)" }, "-=0.6")
+                   
+            // 3. A subtle floating pulse for the whole group
+                   .to(".intro-collab-wrapper", { scale: 1.05, duration: 0.8, ease: "power1.inOut", yoyo: true, repeat: 1 })
+                   
+            // 4. Fade out the overlay to reveal the site
+                   .to("#intro-overlay", { opacity: 0, duration: 1, ease: "power2.inOut" });
+           
+    } else if (introOverlay) {
+        // Fallback: If GSAP fails, just hide the overlay immediately
+        introOverlay.style.display = 'none';
+    }
+
+    // --- BOTTOM NAV & SIDE DRAWER COMBINED LOGIC ---
+    const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+    const sideDrawer = document.getElementById('side-drawer');
+    const openMenuBtn = document.getElementById('open-menu-btn');
+    const closeDrawerBtn = document.getElementById('close-drawer-btn');
+
+    // 1. Handle Active States for Bottom Nav
+    if (bottomNavItems.length > 0) {
+        bottomNavItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                // Prevent default link jump IF it's the menu button
+                if (this.id === 'open-menu-btn') {
+                    e.preventDefault();
+                } else {
+                    // Only change active highlight for actual page links
+                    bottomNavItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+    }
+
+    // 2. Handle Side Drawer Open/Close
+    function toggleDrawer() {
+        if (sideDrawer && drawerOverlay) {
+            sideDrawer.classList.toggle('active');
+            drawerOverlay.classList.toggle('active');
+        }
+    }
+
+    if (openMenuBtn && closeDrawerBtn && drawerOverlay) {
+        openMenuBtn.addEventListener('click', (e) => { 
+            e.preventDefault(); 
+            toggleDrawer(); 
+        });
+        closeDrawerBtn.addEventListener('click', toggleDrawer);
+        drawerOverlay.addEventListener('click', toggleDrawer);
+    }
+
+    // --- FILTERING LOGIC ---
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const menuCards = document.querySelectorAll('.card');
+
+    if (filterBtns.length > 0) {
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update Active Button
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Filter Cards
+                const filterValue = btn.getAttribute('data-filter');
+                
+                menuCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    }
+});

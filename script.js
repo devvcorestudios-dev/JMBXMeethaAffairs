@@ -1,17 +1,29 @@
  document.addEventListener("DOMContentLoaded", () => {
             gsap.registerPlugin(ScrollTrigger);
             
-            // --- PAGE LOAD INTRO ANIMATION ---
+            // --- PAGE LOAD INTRO ANIMATION (COLLABORATION) ---
+            
+            // 🌟 ADD THIS LINE: Tells GSAP to unhide the wrapper right as it takes control
+            gsap.set(".intro-collab-wrapper", { visibility: "visible" });
+            
             const introTl = gsap.timeline({
                 onComplete: () => {
                     document.getElementById('intro-overlay').style.display = 'none';
                 }
             });
 
-          introTl.to(".intro-sweet", { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out", stagger: 0.1 })
-           .to("#intro-text-1", { opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.2)" }, "-=0.6")
-           .to("#intro-text-2", { opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.2)" }, "-=0.5")
-           .to("#intro-overlay", { opacity: 0, duration: 1.2, ease: "power2.inOut", delay: 0.8 });
+            // 1. JMB slides in from the far left, Meetha from the far right
+            introTl.from("#intro-jmb", { x: -200, opacity: 0, duration: 1.2, ease: "power3.out" })
+                   .from("#intro-meetha", { x: 200, opacity: 0, duration: 1.2, ease: "power3.out" }, "<")
+                   
+            // 2. The 'X' punches in from the Z-axis
+                   .from("#intro-x", { scale: 5, opacity: 0, duration: 0.8, ease: "back.out(1.5)" }, "-=0.6")
+                   
+            // 3. A subtle floating pulse for the whole group
+                   .to(".intro-collab-wrapper", { scale: 1.05, duration: 0.8, ease: "power1.inOut", yoyo: true, repeat: 1 })
+                   
+            // 4. Fade out the overlay to reveal the site
+                   .to("#intro-overlay", { opacity: 0, duration: 1, ease: "power2.inOut" });
            
             // --- BOTTOM NAV & SIDE DRAWER COMBINED LOGIC ---
             const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
