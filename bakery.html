@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakery | JMB x Meetha Affairs</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CORE THEME VARIABLES --- */
+        :root {
+            --theme-gold: #D0AB82;
+            --theme-beige: #E1CBAE;
+            --theme-cream: #F5F2D9;
+            --theme-light-pink: #F8C8D4;
+            --theme-pink: #FC96B7;
+            --theme-dark-pink: #E57B9C;
+            --bg-main: var(--theme-cream);
+            --text-dark: #5A3A40;
+            --text-light: #FFF9FA;
+        }
+
+        /* Base Resets */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-main); color: var(--text-dark); overflow-x: hidden; }
+        h1, h2, h3, h4, .font-serif { font-family: 'Playfair Display', serif; }
+        a { text-decoration: none; color: inherit; }
+        button { border: none; background: transparent; cursor: pointer; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+
+        /* --- SPARKLING ANIMATIONS --- */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.6) rotate(0deg); }
+            50% { opacity: 0.9; transform: scale(1.1) rotate(45deg); filter: drop-shadow(0 0 8px var(--theme-gold)); }
+        }
+        .sparkle-bg { position: fixed; pointer-events: none; z-index: 0; animation: twinkle 4s infinite ease-in-out; }
+        .sparkle-1 { top: 15%; left: 10%; width: 40px; animation-delay: 0s; }
+        .sparkle-2 { top: 75%; right: 15%; width: 60px; animation-delay: 1.5s; }
+        .sparkle-3 { top: 30%; right: 10%; width: 30px; animation-delay: 2.5s; }
+        .sparkle-4 { bottom: 20%; left: 20%; width: 45px; animation-delay: 0.8s; }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 50;
+            background: rgba(245, 242, 217, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(208, 171, 130, 0.3);
+        }
+        .nav-content { height: 5rem; display: flex; align-items: center; justify-content: space-between; }
+        .nav-brand { display: flex; align-items: center; gap: 0.75rem; }
+        .brand-circle { width: 3rem; height: 3rem; border-radius: 50%; background: #fff; border: 2px solid var(--theme-gold); display: flex; align-items: center; justify-content: center; overflow: hidden; transition: transform 0.3s; }
+        .nav-brand:hover .brand-circle { transform: scale(1.05); }
+        .brand-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .brand-cross { color: var(--theme-dark-pink); font-weight: 300; font-size: 1.5rem; padding-bottom: 0.25rem; }
+        .nav-links { display: none; align-items: center; gap: 2rem; font-weight: 600; font-size: 0.875rem; }
+        .nav-links a:hover { color: var(--theme-dark-pink); }
+        @media (min-width: 768px) { .nav-links { display: flex; } }
+        .btn { display: inline-block; background: var(--theme-dark-pink); color: var(--text-light); padding: 0.625rem 1.25rem; border-radius: 9999px; font-weight: 600; transition: all 0.3s; }
+        .btn:hover { background: var(--theme-pink); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(252, 150, 183, 0.5); }
+        .btn-hide-mobile { display: none; }
+        @media (min-width: 640px) { .btn-hide-mobile { display: inline-block; } }
+
+        /* --- MENU HEADER --- */
+        .menu-header { padding: 8rem 0 3rem 0; text-align: center; position: relative; z-index: 10; }
+        .menu-title { font-size: 3rem; color: var(--text-dark); margin-bottom: 1rem; }
+        .menu-desc { color: #7A5C61; font-size: 1.125rem; max-width: 600px; margin: 0 auto; }
+
+        /* --- MENU FILTERS --- */
+        .menu-filters { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; position: relative; z-index: 10; }
+        .filter-btn { padding: 0.6rem 1.5rem; border-radius: 9999px; border: 2px solid var(--theme-gold); color: var(--theme-dark-pink); font-weight: 700; transition: all 0.3s; }
+        .filter-btn.active, .filter-btn:hover { background: var(--theme-dark-pink); color: #fff; border-color: var(--theme-dark-pink); }
+
+        /* --- MENU GRID --- */
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; padding-bottom: 6rem; position: relative; z-index: 10; }
+        
+        .card {
+            background: #fff; border-radius: 1.5rem; padding: 1.25rem;
+            border: 1px solid var(--theme-beige); box-shadow: 0 4px 10px rgba(208, 171, 130, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column;
+        }
+        .card:hover { transform: translateY(-12px); box-shadow: 0 20px 30px rgba(208, 171, 130, 0.25); border-color: var(--theme-light-pink); }
+        .card-img { width: 100%; height: 14rem; object-fit: cover; border-radius: 1rem; margin-bottom: 1rem; transition: transform 0.5s ease; }
+        .card:hover .card-img { transform: scale(1.03); }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+        .card-title { font-size: 1.25rem; font-weight: 700; color: var(--text-dark); }
+        .card-price { font-weight: 700; color: var(--theme-dark-pink); font-size: 1.1rem; }
+        .card-desc { font-size: 0.875rem; color: #7A5C61; margin-bottom: 1rem; flex-grow: 1; }
+        .card-action { width: 100%; padding: 0.75rem; border-radius: 0.75rem; background: var(--theme-cream); color: var(--theme-dark-pink); font-weight: 700; text-align: center; transition: all 0.3s; border: 1px solid var(--theme-beige); }
+        .card-action:hover { background: var(--theme-dark-pink); color: #fff; }
+
+        .card.hidden { display: none; }
+
+        /* --- FOOTER & BOTTOM NAV --- */
+        .footer { background: var(--text-dark); color: var(--theme-cream); padding: 4rem 0; border-top: 4px solid var(--theme-gold); position: relative; z-index: 10; }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+        @media (min-width: 768px) { .footer-grid { grid-template-columns: repeat(3, 1fr); } }
+        .footer-map-container { margin: 1.5rem 0; border-radius: 1rem; overflow: hidden; border: 2px solid var(--theme-gold); }
+        .social-links { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+        .social-links a { display: flex; align-items: center; justify-content: center; width: 2.75rem; height: 2.75rem; border-radius: 50%; background: var(--theme-beige); color: var(--text-dark); font-size: 1.25rem; transition: all 0.3s; }
+        .social-links a:hover { background: var(--theme-dark-pink); color: #fff; transform: translateY(-4px); }
+        
+        .bottom-nav { display: none; }
+        @media (max-width: 767px) {
+            body { padding-bottom: 5rem; }
+            .bottom-nav { display: flex; justify-content: space-around; align-items: center; position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); width: 92%; max-width: 400px; height: 4.5rem; background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 9999px; z-index: 200; box-shadow: 0 10px 30px rgba(208, 171, 130, 0.25); }
+            .bottom-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.3rem; color: var(--text-dark); font-size: 0.7rem; font-weight: 700; opacity: 0.7; }
+            .bottom-nav-item i { font-size: 1.25rem; color: var(--theme-gold); transition: all 0.3s; }
+            .bottom-nav-item.active, .bottom-nav-item:hover { opacity: 1; color: var(--theme-dark-pink); }
+            .bottom-nav-item.active i, .bottom-nav-item:hover i { color: var(--theme-dark-pink); transform: translateY(-3px) scale(1.1); }
+        }
+
+        /* --- SIDE DRAWER --- */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(10, 10, 10, 0.4); backdrop-filter: blur(4px); z-index: 250; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .drawer-overlay.active { opacity: 1; visibility: visible; }
+        .side-drawer { position: fixed; top: 0; right: -100%; width: 85%; max-width: 400px; height: 100vh; background: var(--bg-main); z-index: 300; box-shadow: -5px 0 25px rgba(208, 171, 130, 0.2); transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
+        .side-drawer.active { right: 0; }
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 1px solid var(--theme-beige); }
+        .drawer-header h3 { font-size: 1.5rem; color: var(--text-dark); }
+        .close-drawer { font-size: 1.5rem; color: var(--theme-dark-pink); transition: transform 0.3s; }
+        .close-drawer:hover { transform: rotate(90deg); color: var(--theme-pink); }
+        .drawer-search { margin: 1.5rem; display: flex; align-items: center; gap: 0.75rem; background: #fff; padding: 0.875rem 1.25rem; border-radius: 9999px; border: 2px solid var(--theme-beige); }
+        .drawer-search input { border: none; outline: none; width: 100%; background: transparent; color: var(--text-dark); font-family: inherit; font-size: 0.875rem; }
+        .drawer-search i { color: var(--theme-gold); font-size: 1.1rem; }
+        .drawer-content { padding: 0 1.5rem; overflow-y: auto; }
+        .drawer-subtitle { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--theme-gold); margin-bottom: 1rem; }
+        .drawer-links { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+        .drawer-links a { color: var(--text-dark); font-size: 1.125rem; font-weight: 600; transition: color 0.3s; text-decoration: none; }
+        .drawer-links a:hover { color: var(--theme-dark-pink); }
+    </style>
+</head>
+<body>
+
+    <!-- Sparkling Background Elements -->
+    <svg class="sparkle-bg sparkle-1" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 0L56.5 43.5L100 50L56.5 56.5L50 100L43.5 56.5L0 50L43.5 43.5L50 0Z" fill="#D0AB82"/></svg>
+    <svg class="sparkle-bg sparkle-2" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 0L56.5 43.5L100 50L56.5 56.5L50 100L43.5 56.5L0 50L43.5 43.5L50 0Z" fill="#FC96B7"/></svg>
+    <svg class="sparkle-bg sparkle-3" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 0L56.5 43.5L100 50L56.5 56.5L50 100L43.5 56.5L0 50L43.5 43.5L50 0Z" fill="#E1CBAE"/></svg>
+    <svg class="sparkle-bg sparkle-4" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 0L56.5 43.5L100 50L56.5 56.5L50 100L43.5 56.5L0 50L43.5 43.5L50 0Z" fill="#F8C8D4"/></svg>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="nav-brand">
+                <div class="brand-circle"><img src="JMWLOGO.jpeg" alt="JMB Logo"></div>
+                <span class="brand-cross">&times;</span>
+                <div class="brand-circle"><img src="MeethaAffairsLogo.jpeg" alt="Meetha Affairs Logo"></div>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Mithai Menu</a>
+                <a href="bakery.html" style="color: var(--theme-dark-pink);">Bakery Menu</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="#contact" class="btn btn-hide-mobile">Contact Us</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menu Header -->
+    <section class="menu-header container">
+        <h1 class="menu-title font-serif">The Artisanal Bakery</h1>
+        <p class="menu-desc">A beautiful fusion of classic French baking techniques and the royal, aromatic flavors of traditional Indian confectionery.</p>
+    </section>
+
+    <!-- Menu Content -->
+    <main class="container">
+        <!-- Filter Controls -->
+        <div class="menu-filters">
+            <button class="filter-btn active" data-filter="all">All Bakes</button>
+            <button class="filter-btn" data-filter="cakes">Cakes & Pastries</button>
+            <button class="filter-btn" data-filter="cookies">Cookies & Macarons</button>
+            <button class="filter-btn" data-filter="breads">Artisan Breads</button>
+        </div>
+
+        <!-- Menu Grid -->
+        <div class="menu-grid" id="menu-grid">
+            
+            <!-- Item 1 -->
+            <div class="card" data-category="cookies">
+                <img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&q=80&w=600" class="card-img" alt="Macarons">
+                <div class="card-header">
+                    <h4 class="card-title font-serif">Saffron Pistachio Macarons</h4>
+                    <span class="card-price">₹550 / Box</span>
+                </div>
+                <p class="card-desc">Delicate French almond shells filled with a rich saffron and crushed pistachio ganache.</p>
+                <button class="card-action">Add to Cart</button>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="card" data-category="breads">
+                <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600" class="card-img" alt="Croissant">
+                <div class="card-header">
+                    <h4 class="card-title font-serif">Rose Water Croissant</h4>
+                    <span class="card-price">₹220</span>
+                </div>
+                <p class="card-desc">Flaky, butter-rich croissant baked with a hint of organic rose water and almond glaze.</p>
+                <button class="card-action">Add to Cart</button>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="card" data-category="cakes">
+                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600" class="card-img" alt="Cake">
+                <div class="card-header">
+                    <h4 class="card-title font-serif">Eggless Truffle Cake</h4>
+                    <span class="card-price">₹1200 / kg</span>
+                </div>
+                <p class="card-desc">Decadent layers of dark chocolate sponge enveloped in a rich, glossy chocolate ganache.</p>
+                <button class="card-action">Add to Cart</button>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="card" data-category="cakes">
+                <img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?auto=format&fit=crop&q=80&w=600" class="card-img" alt="Mawa Cake">
+                <div class="card-header">
+                    <h4 class="card-title font-serif">Cardamom Mawa Cake</h4>
+                    <span class="card-price">₹850 / kg</span>
+                </div>
+                <p class="card-desc">A buttery, dense Parsi-style tea cake infused with traditional mawa and green cardamom.</p>
+                <button class="card-action">Add to Cart</button>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="card" data-category="cookies">
+                <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&q=80&w=600" class="card-img" alt="Cookies">
+                <div class="card-header">
+                    <h4 class="card-title font-serif">Nankhatai Shortbread</h4>
+                    <span class="card-price">₹350 / Box</span>
+                </div>
+                <p class="card-desc">Classic Indian shortbread cookies baked with desi ghee, semolina, and a touch of nutmeg.</p>
+                <button class="card-action">Add to Cart</button>
+            </div>
+
+            <!-- Item 6 -->
+            <div class="card" data-category="breads">
+                <img src="https://images.unsplash.com/photo-1589367920969-ab8e050bfc35?auto=format&fit=crop&q=80&w=600" class="card-img" alt="Sourdough">
+                <div class="card-header">
+                    <h4 class="card-title font-serif">Rustic Sourdough Loaf</h4>
+                    <span class="card-price">₹280</span>
+                </div>
+                <p class="card-desc">Naturally leavened sourdough with a perfectly crisp crust and an airy, tangy crumb.</p>
+                <button class="card-action">Add to Cart</button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Side Drawer Popup -->
+    <div id="drawer-overlay" class="drawer-overlay"></div>
+    <div id="side-drawer" class="side-drawer">
+        <div class="drawer-header">
+            <h3 class="font-serif text-dark">Explore Menu</h3>
+            <button id="close-drawer-btn" class="close-drawer"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="drawer-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search bakes, cakes...">
+        </div>
+        <div class="drawer-content">
+            <h4 class="drawer-subtitle">Categories</h4>
+            <ul class="drawer-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html">Signature Mithai</a></li>
+                <li><a href="bakery.html" style="color: var(--theme-dark-pink);">Artisanal Bakery</a></li>
+                <li><a href="index.html#occasions">Custom Wedding Boxes</a></li>
+                <li><a href="index.html#occasions">Corporate Gifting</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container footer-grid">
+            <div>
+                <h3 class="font-serif" style="color: var(--theme-gold);">JMB x Meetha Affairs</h3>
+                <p style="color: rgba(245, 242, 217, 0.8);">Redefining traditional confectionery experiences.</p>
+                <div class="footer-map-container">
+                    <iframe width="100%" height="180" src="https://maps.google.com/maps?q=JMB%20Sweets%20Meetha%20Affairs,%20Race%20Course%20Road,%20Lantern%20Square,%20Indore&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-serif" style="color: var(--theme-pink);">Quick Links</h4>
+                <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; color: rgba(245, 242, 217, 0.8);">
+                    <li><a href="index.html#reviews-section">Testimonials</a></li>
+                    <li><a href="index.html#occasions">Corporate Gifting</a></li>
+                    <li><a href="index.html#occasions">Wedding Packages</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-serif" style="color: var(--theme-pink);">Crafted by DevCore Studios</h4>
+                <p style="color: rgba(245, 242, 217, 0.8); font-size: 0.875rem;">Engineered with pure vanilla CSS.</p>
+                <p style="color: var(--theme-beige); font-size: 0.75rem;">© 2026 JMB x Meetha Affairs. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="mailto:contact@jmbmeetha.com"><i class="fa-solid fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="bottom-nav-item">
+            <i class="fa-solid fa-house"></i><span>Home</span>
+        </a>
+        <a href="bakery.html" class="bottom-nav-item active">
+            <i class="fa-solid fa-bread-slice"></i><span>Bakery</span>
+        </a>
+        <a href="menu.html" class="bottom-nav-item">
+            <i class="fa-solid fa-book-open"></i><span>Mithai</span>
+        </a>
+        <button id="open-menu-btn" class="bottom-nav-item">
+            <i class="fa-solid fa-bars"></i><span>More</span>
+        </button>
+    </nav>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // --- FILTERING LOGIC ---
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const menuCards = document.querySelectorAll('.card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update Active Button
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Filter Cards
+                    const filterValue = btn.getAttribute('data-filter');
+                    
+                    menuCards.forEach(card => {
+                        if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            // --- SIDE DRAWER LOGIC ---
+            const drawerOverlay = document.getElementById('drawer-overlay');
+            const sideDrawer = document.getElementById('side-drawer');
+            const openMenuBtn = document.getElementById('open-menu-btn');
+            const closeDrawerBtn = document.getElementById('close-drawer-btn');
+
+            function toggleDrawer() {
+                sideDrawer.classList.toggle('active');
+                drawerOverlay.classList.toggle('active');
+            }
+
+            if (openMenuBtn && closeDrawerBtn && drawerOverlay) {
+                openMenuBtn.addEventListener('click', (e) => { e.preventDefault(); toggleDrawer(); });
+                closeDrawerBtn.addEventListener('click', toggleDrawer);
+                drawerOverlay.addEventListener('click', toggleDrawer);
+            }
+        });
+    </script>
+</body>
+</html>

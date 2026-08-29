@@ -62,11 +62,13 @@
         .sparkle-3 { top: 30%; right: 10%; width: 30px; animation-delay: 2.5s; }
         .sparkle-4 { bottom: 20%; left: 20%; width: 45px; animation-delay: 0.8s; }
 
-        /* Intro Overlay */
+        /* --- MITHAI INTRO ANIMATIONS --- */
+
+        /* --- GSAP INTRO OVERLAY --- */
         #intro-overlay {
             position: fixed;
             inset: 0;
-            z-index: 9999;
+            z-index: 9999; /* Ensures it covers the bottom nav */
             background-color: #0a0a0a;
             display: flex;
             align-items: center;
@@ -74,18 +76,42 @@
             overflow: hidden;
             will-change: opacity;
         }
-        .intro-flower {
-            position: fixed;
-            width: 192px;
-            transform: scale(0.75);
-            opacity: 0;
-            will-change: transform;
+        
+        /* The continuous rotation keyframe */
+        @keyframes spin-mithai {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
-        .intro-flower.tl { top: 0; left: 0; transform: translate(-25%, -25%) scale(0.75); }
-        .intro-flower.tr { top: 0; right: 0; transform: translate(25%, -25%) rotate(90deg) scale(0.75); }
-        .intro-flower.bl { bottom: 0; left: 0; transform: translate(-25%, 25%) rotate(-90deg) scale(0.75); }
-        .intro-flower.br { bottom: 0; right: 0; transform: translate(25%, 25%) rotate(180deg) scale(0.75); }
-        @media (min-width: 768px) { .intro-flower { width: 256px; } }
+
+        /* The image itself that spins */
+        .spinning-sweet {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* 12s is a nice slow, elegant spin. Lower the number to spin faster */
+            animation: spin-mithai 12s linear infinite;
+            filter: drop-shadow(0 10px 15px rgba(208, 171, 130, 0.4));
+        }
+
+        /* The wrapper that GSAP controls for fading/scaling */
+        .intro-sweet {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            opacity: 0; /* Hidden by default until GSAP reveals them */
+            transform: scale(0.5); /* <-- ADD THIS: Makes them start small! */
+            z-index: 10;
+        }
+        
+        @media (min-width: 768px) {
+            .intro-sweet { width: 180px; height: 180px; }
+        }
+
+        /* Positioning the wrappers in the corners */
+        .intro-sweet.tl { top: -20px; left: -20px; }
+        .intro-sweet.tr { top: -20px; right: -20px; }
+        .intro-sweet.bl { bottom: -20px; left: -20px; }
+        .intro-sweet.br { bottom: -20px; right: -20px; }
         
         .intro-text-wrapper {
             display: flex;
@@ -527,4 +553,56 @@
             transform: translateY(-4px);
             box-shadow: 0 6px 15px rgba(229, 123, 156, 0.4);
             border-color: transparent;
+        }
+
+        /* --- CAROUSEL ARROW BUTTONS --- */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            /* Start slightly smaller and completely faded out */
+            transform: translateY(-50%) scale(0.8);
+            opacity: 0;
+            visibility: hidden;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--theme-gold);
+            color: var(--theme-dark-pink);
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(208, 171, 130, 0.3);
+            z-index: 20;
+            cursor: pointer;
+            /* Smooth spring-like transition for appearing */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 🌟 THE MAGIC: When hovering the wrapper, show the arrows 🌟 */
+        .carousel-wrapper:hover .carousel-arrow {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-50%) scale(1); /* Pops them up to full size */
+        }
+        
+        .carousel-arrow:hover {
+            background: var(--theme-dark-pink);
+            color: #fff;
+            border-color: var(--theme-dark-pink);
+            box-shadow: 0 6px 20px rgba(229, 123, 156, 0.4);
+        }
+        
+        .carousel-arrow.left-arrow { left: -1.5rem; }
+        .carousel-arrow.right-arrow { right: -1.5rem; }
+        
+        /* Hide arrows completely on mobile phones */
+        @media (max-width: 767px) {
+            .carousel-arrow { display: none !important; }
         }

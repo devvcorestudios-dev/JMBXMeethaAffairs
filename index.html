@@ -39,44 +39,35 @@
         <path d="M50 0L56.5 43.5L100 50L56.5 56.5L50 100L43.5 56.5L0 50L43.5 43.5L50 0Z" fill="#F8C8D4"/>
     </svg>
 
-    <!-- GSAP Intro Overlay -->
+   <!-- GSAP Intro Overlay -->
     <div id="intro-overlay">
-        <!-- Re-tinted Intro flowers for the new theme -->
-        <svg class="intro-flower tl" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 10 Q 50 80 150 120" stroke="#D0AB82" stroke-width="2" fill="none"/>
-            <circle cx="50" cy="50" r="10" fill="#FC96B7"/>
-            <circle cx="90" cy="90" r="12" fill="#F8C8D4"/>
-            <path d="M35 35 Q 50 15 65 35 Q 50 65 35 35" fill="#E57B9C"/>
-            <path d="M75 75 Q 95 55 115 75 Q 95 105 75 75" fill="#E1CBAE"/>
-        </svg>
-        <svg class="intro-flower tr" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 10 Q 50 80 150 120" stroke="#D0AB82" stroke-width="2" fill="none"/>
-            <circle cx="50" cy="50" r="10" fill="#FC96B7"/>
-            <circle cx="90" cy="90" r="12" fill="#F8C8D4"/>
-            <path d="M35 35 Q 50 15 65 35 Q 50 65 35 35" fill="#E57B9C"/>
-            <path d="M75 75 Q 95 55 115 75 Q 95 105 75 75" fill="#E1CBAE"/>
-        </svg>
-        <svg class="intro-flower bl" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 10 Q 50 80 150 120" stroke="#D0AB82" stroke-width="2" fill="none"/>
-            <circle cx="50" cy="50" r="10" fill="#FC96B7"/>
-            <circle cx="90" cy="90" r="12" fill="#F8C8D4"/>
-            <path d="M35 35 Q 50 15 65 35 Q 50 65 35 35" fill="#E57B9C"/>
-            <path d="M75 75 Q 95 55 115 75 Q 95 105 75 75" fill="#E1CBAE"/>
-        </svg>
-        <svg class="intro-flower br" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 10 Q 50 80 150 120" stroke="#D0AB82" stroke-width="2" fill="none"/>
-            <circle cx="50" cy="50" r="10" fill="#FC96B7"/>
-            <circle cx="90" cy="90" r="12" fill="#F8C8D4"/>
-            <path d="M35 35 Q 50 15 65 35 Q 50 65 35 35" fill="#E57B9C"/>
-            <path d="M75 75 Q 95 55 115 75 Q 95 105 75 75" fill="#E1CBAE"/>
-        </svg>
+        
+        <!-- Top Left: Ladoo -->
+        <div class="intro-sweet tl">
+            <img src="gulab-transparent.png" alt="Ladoo" class="spinning-sweet">
+        </div>
+
+        <!-- Top Right: Kaju Katli -->
+        <div class="intro-sweet tr">
+            <img src="kajukatli-transparent.png" alt="Kaju Katli" class="spinning-sweet">
+        </div>
+
+        <!-- Bottom Left: ladoo Roll -->
+        <div class="intro-sweet bl">
+            <img src="ladoo-transparent.png" alt="Ladoo Roll" class="spinning-sweet">
+        </div>
+
+        <!-- Bottom Right: Saffron Modak -->
+        <div class="intro-sweet br">
+            <img src="barfi-transparent.png" alt="Modak" class="spinning-sweet">
+        </div>
         
         <div class="intro-text-wrapper font-serif">
             <h1 id="intro-text-1">JMB X MEETHA</h1>
             <h1 id="intro-text-2">AFFAIRS</h1>
         </div>
     </div>
-
+    
   <!-- Navigation Bar -->
     <header class="navbar">
         <div class="container nav-content">
@@ -91,13 +82,13 @@
             </a>
             
             <nav class="nav-links">
-                <a href="#about">Our Story</a>
+                <a href="#story">Our Story</a>
                 <a href="#carousel">Collections</a>
                 <a href="#reviews-section">Testimonials</a>
             </nav>
             
             <div class="nav-actions">
-                <a href="#carousel" class="btn btn-hide-mobile">Explore Menu</a>
+                <a href="menu.html" class="btn btn-hide-mobile">Explore Menu</a>
                 <!-- Hamburger Button (Mobile Only)
                 <button class="hamburger" id="hamburger-btn" aria-label="Toggle Menu">
                     <i class="fa-solid fa-bars"></i>
@@ -145,12 +136,12 @@
         </div>
     </section>
 
-    <!-- Sweets Carousel Section (Grid) -->
+   
     <section id="carousel" class="collections">
          <div class="container text-center">
             <span class="section-sub">Handcrafted Delicacies</span>
             <h3 class="section-title font-serif">Featured Collections</h3>
-            
+
             <div class="grid-3">
                 <div class="card">
                     <img src="Gulabjamun.avif" class="card-img" alt="Sweets">
@@ -169,7 +160,11 @@
                 </div>
             </div>
         </div>
+        
     </section>
+
+
+
     <!-- Best Sellers Section -->
     <section id="best-sellers" class="collections" style="background: transparent; border-top: none;">
         <div class="container">
@@ -177,7 +172,13 @@
                 <span class="section-sub">Crowd Favorites</span>
                 <h3 class="section-title font-serif">Our Best Sellers</h3>
             </div>
-            
+              <!-- 🌟 START OF THE NEW WRAPPER 🌟 -->
+            <div class="carousel-wrapper">
+                
+                <!-- Left Arrow Button -->
+                <button class="carousel-arrow left-arrow"><i class="fa-solid fa-chevron-left"></i></button>
+
+    <!-- Sweets Carousel Section (Grid) -->
             <div class="horizontal-carousel">
                 <!-- CARD 1 -->
                 <div class="card">
@@ -241,6 +242,11 @@
                     <p class="card-desc">Rich cashew perfection.</p>
                 </div>
             </div>
+             <!-- Right Arrow Button -->
+                <button class="carousel-arrow right-arrow"><i class="fa-solid fa-chevron-right"></i></button>
+                
+            </div>
+            <!-- 🌟 END OF THE NEW WRAPPER 🌟 -->
         </div>
     </section>
 

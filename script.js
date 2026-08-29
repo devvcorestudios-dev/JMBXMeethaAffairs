@@ -8,11 +8,10 @@
                 }
             });
 
-            introTl.to(".intro-flower", { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out", stagger: 0.1 })
-                   .to("#intro-text-1", { opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.2)" }, "-=0.6")
-                   .to("#intro-text-2", { opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.2)" }, "-=0.5")
-                   .to("#intro-overlay", { opacity: 0, duration: 1.2, ease: "power2.inOut", delay: 0.8 });
-
+          introTl.to(".intro-sweet", { opacity: 1, scale: 1, duration: 1.2, ease: "power2.out", stagger: 0.1 })
+           .to("#intro-text-1", { opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.2)" }, "-=0.6")
+           .to("#intro-text-2", { opacity: 1, y: 0, duration: 0.8, ease: "back.out(1.2)" }, "-=0.5")
+           .to("#intro-overlay", { opacity: 0, duration: 1.2, ease: "power2.inOut", delay: 0.8 });
            
             // --- BOTTOM NAV & SIDE DRAWER COMBINED LOGIC ---
             const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
