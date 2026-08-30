@@ -180,4 +180,24 @@
                     document.getElementById(targetId).classList.add('active');
                 });
             });
+// --- 🌟 FIXED 2: HORIZONTAL CAROUSEL ARROWS LOGIC (Was Missing) 🌟 ---
+    const carouselWrappers = document.querySelectorAll('.carousel-wrapper');
+    carouselWrappers.forEach(wrapper => {
+        const track = wrapper.querySelector('.horizontal-carousel');
+        const leftBtn = wrapper.querySelector('.left-arrow');
+        const rightBtn = wrapper.querySelector('.right-arrow');
+        
+        const scrollAmount = 300; // How far it scrolls per click
+
+        if(leftBtn && rightBtn && track) {
+            leftBtn.addEventListener('click', () => {
+                track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            });
+            
+            rightBtn.addEventListener('click', () => {
+                track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            });
+        }
+    });
+
         });

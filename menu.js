@@ -1,78 +1,91 @@
- document.addEventListener("DOMContentLoaded", () => {
-            // --- FILTERING LOGIC ---
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            const menuCards = document.querySelectorAll('.card');
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // --- 1. FILTERING LOGIC ---
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const menuCards = document.querySelectorAll('.card');
 
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    filterBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
+    if (filterBtns.length > 0) {
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update Active Button
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
 
-                    const filterValue = btn.getAttribute('data-filter');
-                    
-                    menuCards.forEach(card => {
-                        if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
-                            card.classList.remove('hidden');
-                        } else {
-                            card.classList.add('hidden');
-                        }
-                    });
-                });
-            });
-
-           // --- PAGE LOAD INTRO ANIMATION (COLLABORATION) ---
-            
-            // 🌟 ADD THIS LINE: Tells GSAP to unhide the wrapper right as it takes control
-            gsap.set(".intro-collab-wrapper", { visibility: "visible" });
-            
-            const introTl = gsap.timeline({
-                onComplete: () => {
-                    document.getElementById('intro-overlay').style.display = 'none';
-                }
-            });
-
-            // 1. JMB slides in from the far left, Meetha from the far right
-            introTl.from("#intro-jmb", { x: -200, opacity: 0, duration: 1.2, ease: "power3.out" })
-                   .from("#intro-meetha", { x: 200, opacity: 0, duration: 1.2, ease: "power3.out" }, "<")
-                   
-            // 2. The 'X' punches in from the Z-axis
-                   .from("#intro-x", { scale: 5, opacity: 0, duration: 0.8, ease: "back.out(1.5)" }, "-=0.6")
-                   
-            // 3. A subtle floating pulse for the whole group
-                   .to(".intro-collab-wrapper", { scale: 1.05, duration: 0.8, ease: "power1.inOut", yoyo: true, repeat: 1 })
-                   
-            // 4. Fade out the overlay to reveal the site
-                   .to("#intro-overlay", { opacity: 0, duration: 1, ease: "power2.inOut" });
-
-                   
-            // --- BOTTOM NAV & SIDE DRAWER COMBINED LOGIC ---
-            const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
-            const drawerOverlay = document.getElementById('drawer-overlay');
-            const sideDrawer = document.getElementById('side-drawer');
-            const openMenuBtn = document.getElementById('open-menu-btn');
-            const closeDrawerBtn = document.getElementById('close-drawer-btn');
-
-            bottomNavItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    if (this.id === 'open-menu-btn') {
-                        e.preventDefault();
+                // Filter Cards
+                const filterValue = btn.getAttribute('data-filter');
+                
+                menuCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.classList.remove('hidden');
                     } else {
-                        bottomNavItems.forEach(nav => nav.classList.remove('active'));
-                        this.classList.add('active');
+                        card.classList.add('hidden');
                     }
                 });
             });
+        });
+    }
 
-            function toggleDrawer() {
-                if (sideDrawer && drawerOverlay) {
-                    sideDrawer.classList.toggle('active');
-                    drawerOverlay.classList.toggle('active');
-                }
-            }
+    // --- 2. PAGE LOAD INTRO ANIMATION (COLLABORATION) ---
+    const introOverlay = document.getElementById('intro-overlay');
+    const collabWrapper = document.querySelector('.intro-collab-wrapper');
 
-            if (openMenuBtn && closeDrawerBtn && drawerOverlay) {
-                openMenuBtn.addEventListener('click', toggleDrawer);
-                closeDrawerBtn.addEventListener('click', toggleDrawer);
-                drawerOverlay.addEventListener('click', toggleDrawer);
+    if (introOverlay && typeof gsap !== 'undefined') {
+        // Tells GSAP to unhide the wrapper right as it takes control
+        if (collabWrapper) gsap.set(collabWrapper, { visibility: "visible" });
+        
+        const introTl = gsap.timeline({
+            onComplete: () => {
+                introOverlay.style.display = 'none';
             }
         });
+
+        // The Cinematic Animation with the 1-second hold
+        introTl.from("#intro-jmb", { x: -200, opacity: 0, duration: 1.5, ease: "power3.out" })
+               .from("#intro-meetha", { x: 200, opacity: 0, duration: 1.5, ease: "power3.out" }, "<")
+               .from("#intro-x", { scale: 5, opacity: 0, duration: 1.2, ease: "back.out(1.5)" }, "-=1")
+               .to(".intro-collab-wrapper", { scale: 1.05, duration: 1.2, ease: "power1.inOut", yoyo: true, repeat: 1 })
+               .to(introOverlay, { opacity: 0, duration: 1.5, ease: "power2.inOut", delay: 1 });
+               
+    } else if (introOverlay) {
+        // Fallback: If GSAP fails to load, instantly hide the black screen
+        introOverlay.style.display = 'none';
+    }
+           
+    // --- 3. BOTTOM NAV & SIDE DRAWER COMBINED LOGIC ---
+    const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+    const sideDrawer = document.getElementById('side-drawer');
+    const openMenuBtn = document.getElementById('open-menu-btn');
+    const closeDrawerBtn = document.getElementById('close-drawer-btn');
+
+    // Handle Active States for Bottom Nav
+    if (bottomNavItems.length > 0) {
+        bottomNavItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (this.id === 'open-menu-btn') {
+                    e.preventDefault();
+                } else {
+                    bottomNavItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+    }
+
+    // Handle Side Drawer Open/Close
+    function toggleDrawer() {
+        if (sideDrawer && drawerOverlay) {
+            sideDrawer.classList.toggle('active');
+            drawerOverlay.classList.toggle('active');
+        }
+    }
+
+    if (openMenuBtn && closeDrawerBtn && drawerOverlay) {
+        openMenuBtn.addEventListener('click', (e) => { 
+            e.preventDefault(); 
+            toggleDrawer(); 
+        });
+        closeDrawerBtn.addEventListener('click', toggleDrawer);
+        drawerOverlay.addEventListener('click', toggleDrawer);
+    }
+});

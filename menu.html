@@ -157,6 +157,7 @@
         </div>
     </main>
 
+
     <!-- Footer -->
     <footer id="contact" class="footer">
         <div class="container footer-grid">
@@ -189,21 +190,65 @@
         </div>
     </footer>
 
-    <!-- Mobile Bottom Navigation -->
+   
+
+     <!-- Dark Overlay for Side Drawer -->
+    <div id="drawer-overlay" class="drawer-overlay"></div>
+    
+    <!-- Side Menu Popup Drawer -->
+    <div id="side-drawer" class="side-drawer">
+        <div class="drawer-header">
+            <h3 class="font-serif text-dark">Explore Menu</h3>
+            <button id="close-drawer-btn" class="close-drawer"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="drawer-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search sweets, hampers...">
+        </div>
+        
+        <!-- Expanded Menu Categories -->
+        <div class="drawer-content">
+            <h4 class="drawer-subtitle">Categories</h4>
+            <ul class="drawer-links">
+                <li><a href="menu.html">Mithai Menu</a></li>
+                <li><a href="bakery.html">Bakery Menu</a></li>
+                <li><a href="#">Premium Dry Fruits</a></li>
+                <li><a href="#">Namkeen & Savories</a></li>
+                <li><a href="#">Custom Wedding Boxes</a></li>
+                <li><a href="#">Corporate Gifting</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    
+   <!-- Mobile Bottom Navigation (Netflix Style) -->
     <nav class="bottom-nav">
-        <a href="index.html" class="bottom-nav-item">
-            <i class="fa-solid fa-house"></i><span>Home</span>
+        <a href="#" class="bottom-nav-item active">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
         </a>
-        <a href="menu.html" class="bottom-nav-item active">
-            <i class="fa-solid fa-book-open"></i><span>Menu</span>
+        <a href="#best-sellers" class="bottom-nav-item">
+            <i class="fa-solid fa-star"></i>
+            <span>Best</span>
         </a>
-        <a href="index.html#occasions" class="bottom-nav-item">
-            <i class="fa-solid fa-gift"></i><span>Gifting</span>
+        <a href="#occasions" class="bottom-nav-item">
+            <i class="fa-solid fa-gift"></i>
+            <span>Gifting</span>
         </a>
+        <a href="#reviews-section" class="bottom-nav-item">
+            <i class="fa-regular fa-comment-dots"></i>
+            <span>Reviews</span>
+        </a>
+        <!-- NEW Menu Button -->
         <button id="open-menu-btn" class="bottom-nav-item">
-            <i class="fa-solid fa-bars"></i><span>More</span>
+            <i class="fa-solid fa-bars"></i>
+            <span>Menu</span>
         </button>
     </nav>
+
 
     <!-- Scripts -->
     <script src="menu.js"></script>

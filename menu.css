@@ -39,6 +39,136 @@
         .btn:hover { background: var(--theme-pink); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(252, 150, 183, 0.5); }
         .btn-hide-mobile { display: none; }
         @media (min-width: 640px) { .btn-hide-mobile { display: inline-block; } }
+        /* --- MOBILE BOTTOM NAVIGATION (APP STYLE) --- */
+        .bottom-nav {
+            display: none; /* Hidden on desktop by default */
+        }
+
+        @media (max-width: 767px) {
+            /* Add padding to the body so the footer isn't hidden behind the nav */
+            body {
+                padding-bottom: 5rem;
+            }
+
+            /* Hide the old hamburger button since we have bottom nav now */
+            .hamburger {
+                display: none !important;
+            }
+
+            .bottom-nav {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                position: fixed;
+                bottom: 1.5rem;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 92%;
+                max-width: 400px;
+                height: 4.5rem;
+                background: rgba(245, 242, 217, 0.45); /* Frosted cream */
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-top: 1px solid rgba(208, 171, 130, 0.3);
+                z-index: 200;
+                border-radius: 9999px;
+                box-shadow: 0 -4px 20px rgba(208, 171, 130, 0.15);
+                /* Adds padding for iPhones without physical home buttons */
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+            
+            .bottom-nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 0.3rem;
+                color: var(--text-dark);
+                text-decoration: none;
+                font-size: 0.7rem;
+                font-weight: 700;
+                flex: 1; /* Ensures 5 buttons fit evenly */
+                transition: color 0.3s;
+                opacity: 0.7;
+            }
+            
+            .bottom-nav-item i {
+                font-size: 1.25rem;
+                color: var(--theme-gold);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            /* Active & Hover States */
+            .bottom-nav-item.active,
+            .bottom-nav-item:hover {
+                opacity: 1;
+                color: var(--theme-dark-pink);
+            }
+            
+            .bottom-nav-item.active i,
+            .bottom-nav-item:hover i {
+                color: var(--theme-dark-pink);
+                transform: translateY(-3px) scale(1.1);
+                filter: drop-shadow(0 4px 6px rgba(229, 123, 156, 0.3));
+            }
+        }
+
+        /* --- SIDE DRAWER POPUP STYLES --- */
+        .bottom-nav-item {
+            flex: 1; /* Ensures 5 buttons fit evenly */
+        }
+        
+        .drawer-overlay {
+            position: fixed; inset: 0;
+            background: rgba(10, 10, 10, 0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 250;
+            opacity: 0; visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .drawer-overlay.active {
+            opacity: 1; visibility: visible;
+        }
+        
+        .side-drawer {
+            position: fixed; top: 0; right: -100%;
+            width: 85%; max-width: 400px; height: 100vh;
+            background: var(--bg-main);
+            z-index: 300;
+            box-shadow: -5px 0 25px rgba(208, 171, 130, 0.2);
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column;
+        }
+        .side-drawer.active {
+            right: 0;
+        }
+        
+        .drawer-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem; border-bottom: 1px solid var(--theme-beige);
+        }
+        .drawer-header h3 { font-size: 1.5rem; color: var(--text-dark); }
+        .close-drawer { font-size: 1.5rem; color: var(--theme-dark-pink); transition: transform 0.3s; }
+        .close-drawer:hover { transform: rotate(90deg); color: var(--theme-pink); }
+        
+        .drawer-search {
+            margin: 1.5rem; display: flex; align-items: center; gap: 0.75rem;
+            background: #fff; padding: 0.875rem 1.25rem; border-radius: 9999px;
+            border: 2px solid var(--theme-beige);
+            box-shadow: 0 4px 10px rgba(208, 171, 130, 0.1);
+        }
+        .drawer-search input {
+            border: none; outline: none; width: 100%; background: transparent;
+            color: var(--text-dark); font-family: inherit; font-size: 0.875rem;
+        }
+        .drawer-search i { color: var(--theme-gold); font-size: 1.1rem; }
+        
+        .drawer-content { padding: 0 1.5rem; overflow-y: auto; }
+        .drawer-subtitle { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--theme-gold); margin-bottom: 1rem; }
+        .drawer-links { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+        .drawer-links a { color: var(--text-dark); font-size: 1.125rem; font-weight: 600; transition: color 0.3s; text-decoration: none; }
+        .drawer-links a:hover { color: var(--theme-dark-pink); }
 
         /* --- MENU HEADER --- */
         .menu-header { padding: 8rem 0 3rem 0; text-align: center; }
