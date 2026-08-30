@@ -290,9 +290,9 @@
             flex-direction: column;
         }
         /* --- LEGACY SECTION --- */
-        .legacy-section {
+        .legacy-section-container {
             padding: 5rem 1.5rem;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.6);
         }
 
         .legacy-grid {
