@@ -68,7 +68,7 @@
             .intro-collab-wrapper { gap: 1rem; }
         }
 
-        
+
         /* --- NAVBAR --- */
         .navbar {
             position: fixed; top: 0; left: 0; width: 100%; z-index: 50;
@@ -156,3 +156,84 @@
         .drawer-links { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
         .drawer-links a { color: var(--text-dark); font-size: 1.125rem; font-weight: 600; transition: color 0.3s; text-decoration: none; }
         .drawer-links a:hover { color: var(--theme-dark-pink); }
+
+         /* cart popup */
+        /* --- COMING SOON POPUP --- */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 10, 0.4);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 10000; /* Ensure it stays above the side drawer and nav */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Class added by JS to show the popup */
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-box {
+            background: var(--bg-main);
+            padding: 2.5rem 2.5rem;
+            border-radius: 1.5rem;
+            border: 2px solid var(--theme-gold);
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+            box-shadow: 0 20px 40px rgba(208, 171, 130, 0.3);
+            /* Starts slightly lower and smaller for the animation */
+            transform: translateY(20px) scale(0.9);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .overlay.active .popup-box {
+            transform: translateY(0) scale(1);
+        }
+
+        .popup-box h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--theme-dark-pink);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .popup-box p {
+            color: var(--text-dark);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .popup-box span {
+            color: var(--theme-gold);
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        .popup-box button {
+            background: var(--theme-dark-pink);
+            color: #fff;
+            font-family: inherit;
+            font-weight: 600;
+            padding: 0.75rem 2.5rem;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(229, 123, 156, 0.3);
+            font-size: 1rem;
+        }
+
+        .popup-box button:hover {
+            background: var(--theme-pink);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(252, 150, 183, 0.5);
+        }

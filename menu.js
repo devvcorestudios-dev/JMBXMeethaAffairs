@@ -88,4 +88,30 @@ document.addEventListener("DOMContentLoaded", () => {
         closeDrawerBtn.addEventListener('click', toggleDrawer);
         drawerOverlay.addEventListener('click', toggleDrawer);
     }
+
+  // 1. Grab ALL the buttons using their class, not an ID
+    const addToBoxBtns = document.querySelectorAll('.card-action'); 
+    
+    const popupOverlay = document.getElementById('popupOverlay');
+    const closeBtn = document.getElementById('closeBtn');
+
+    // 2. Loop through every button and attach your opening logic
+    addToBoxBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => { 
+            e.preventDefault(); // Stops the page from jumping if the button is an <a> tag
+            popupOverlay.classList.add('active');
+        });
+    });
+
+    // Your closing logic was already perfect!
+    closeBtn.addEventListener('click', () => {
+        popupOverlay.classList.remove('active');
+    });
+
+    popupOverlay.addEventListener('click', (event) => {
+        if (event.target === popupOverlay){
+            popupOverlay.classList.remove('active');
+        }
+    });
+
 });
